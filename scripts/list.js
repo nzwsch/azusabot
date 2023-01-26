@@ -1,5 +1,10 @@
-import { AWW_COMMAND, INVITE_COMMAND } from './commands.js';
-import Axios from 'axios';
+const dotenv = require('dotenv')
+
+dotenv.config()
+
+const { AWW_COMMAND, INVITE_COMMAND } = require('./commands.js');
+// import Axios from 'axios';
+const Axios = require('axios')
 
 /**
  * This file is meant to be run from the command line, and is not used by the
@@ -23,19 +28,15 @@ if (!applicationId) {
  * Register all commands globally.  This can take o(minutes), so wait until
  * you're sure these are the commands you want.
  */
-async function registerGlobalCommands() {
+async function listGlobalCommands() {
   const url = `https://discord.com/api/v10/applications/${applicationId}/commands`;
-  await registerCommands(url);
+  await listCommands(url);
 }
 
-async function registerCommands(url: string) {
+async function listCommands(url) {
   const response = await Axios({
-    method: 'PUT',
+    method: 'GET',
     url: url,
-    data: [
-      AWW_COMMAND,
-      INVITE_COMMAND
-    ],
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bot ${token}`,
@@ -43,7 +44,7 @@ async function registerCommands(url: string) {
   });
 
   if (response.status === 200) {
-    console.log('Registered all commands');
+    console.log(response.data)
   } else {
     console.error('Error registering commands');
     const text = response.data;
@@ -52,4 +53,6 @@ async function registerCommands(url: string) {
   return response;
 }
 
-await registerGlobalCommands();
+;(async function() {
+  await listGlobalCommands()
+})()
