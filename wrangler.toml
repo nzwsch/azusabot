@@ -1,3 +1,4 @@
 name = "azusabot"
 main = "src/index.ts"
 compatibility_date = "2023-01-26"
+send_metrics = false
