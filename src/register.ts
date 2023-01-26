@@ -1,5 +1,5 @@
 import { AWW_COMMAND, INVITE_COMMAND } from './commands.js';
-import Axios from 'axios'
+import Axios from 'axios';
 
 /**
  * This file is meant to be run from the command line, and is not used by the
@@ -38,16 +38,15 @@ async function registerCommands(url: string) {
     ],
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bot ${token}`
-    }
-  })
-
+      'Authorization': `Bot ${token}`,
+    },
+  });
 
   if (response.status === 200) {
     console.log('Registered all commands');
   } else {
     console.error('Error registering commands');
-    const text = response.data
+    const text = response.data;
     console.error(text);
   }
   return response;
