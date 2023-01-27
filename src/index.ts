@@ -41,7 +41,7 @@ export default {
     }
 
     const message = JSON.parse(rawBody);
-    const command = message.data.name.toLowerCase();
+    const commandName = message.data.name.toLowerCase();
 
     if (message.type === InteractionType.PING) {
       return new JsonResponse({ type: InteractionResponseType.PONG });
@@ -49,11 +49,13 @@ export default {
 
     if (
       message.type === InteractionType.APPLICATION_COMMAND &&
-      command === AWW_COMMAND.name
+      commandName === AWW_COMMAND.name
     ) {
+      const message = 'hello world!'
+
       return new JsonResponse({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: { content: 'hello world!' },
+        data: { content: message },
       });
     }
 
