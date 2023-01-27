@@ -1,5 +1,10 @@
-import { InteractionResponseType, InteractionType, verifyKey } from 'discord-interactions';
-import {AWW_COMMAND} from './commands'
+import {
+  InteractionResponseType,
+  InteractionType,
+  verifyKey,
+} from 'discord-interactions';
+import { AWW_COMMAND } from './commands';
+import { JsonResponse } from './JsonResponse';
 
 export interface Env {
   DISCORD_APPLICATION_ID: string;
@@ -12,7 +17,7 @@ export default {
     request: Request,
     env: Env,
     ctx: ExecutionContext
-    ): Promise<Response> {
+  ): Promise<Response> {
     const rawBody = await request.text();
 
     if (request.method === 'POST') {
@@ -36,32 +41,20 @@ export default {
     }
 
     const message = JSON.parse(rawBody);
+    const command = message.data.name.toLowerCase();
 
     if (message.type === InteractionType.PING) {
-      const body = JSON.stringify({
-        type: InteractionResponseType.PONG,
-      });
-      const init = {
-        headers: {
-          'content-type': 'application/json;charset=UTF-8',
-        },
-      };
-      return new Response(body, init);
+      return new JsonResponse({ type: InteractionResponseType.PONG });
     }
 
-    if (message.type === InteractionType.APPLICATION_COMMAND && message.data.name.toLowerCase() === AWW_COMMAND.name) {
-      const body = JSON.stringify({
+    if (
+      message.type === InteractionType.APPLICATION_COMMAND &&
+      command === AWW_COMMAND.name
+    ) {
+      return new JsonResponse({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: "hello world!"
-        }
+        data: { content: 'hello world!' },
       });
-      const init = {
-        headers: {
-          'content-type': 'application/json;charset=UTF-8',
-        },
-      };
-      return new Response(body, init);
     }
 
     return new Response('Unknown Type', {
