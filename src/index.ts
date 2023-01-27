@@ -1,10 +1,7 @@
-import {
-  InteractionResponseType,
-  InteractionType,
-  verifyKey,
-} from 'discord-interactions';
+import { InteractionResponseType, InteractionType } from 'discord-interactions';
 import { AWW_COMMAND } from './commands';
 import { JsonResponse } from './JsonResponse';
+import { verifyDiscordRequest } from './verifyDiscordRequest';
 
 export interface Env {
   DISCORD_APPLICATION_ID: string;
@@ -18,29 +15,13 @@ export default {
     env: Env,
     ctx: ExecutionContext
   ): Promise<Response> {
-    const rawBody = await request.text();
+    const discordResponse = await verifyDiscordRequest(request, env);
 
-    if (request.method === 'POST') {
-      const signature = request.headers.get('X-Signature-Ed25519');
-      const timestamp = request.headers.get('X-Signature-Timestamp');
-      const pubKey = env.DISCORD_PUBLIC_KEY;
-
-      if (signature == null || timestamp == null) {
-        return new Response('Sorry, you have supplied an invalid key.', {
-          status: 403,
-        });
-      }
-
-      const isValidRequest = verifyKey(rawBody, signature, timestamp, pubKey);
-
-      if (!isValidRequest) {
-        return new Response('Bad request signature', {
-          status: 401,
-        });
-      }
+    if (discordResponse) {
+      return discordResponse;
     }
 
-    const message = JSON.parse(rawBody);
+    const message = await request.json<any>();
     const commandName = message.data.name.toLowerCase();
 
     if (message.type === InteractionType.PING) {
@@ -51,7 +32,7 @@ export default {
       message.type === InteractionType.APPLICATION_COMMAND &&
       commandName === AWW_COMMAND.name
     ) {
-      const message = 'hello world!'
+      const message = 'hello world!';
 
       return new JsonResponse({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
