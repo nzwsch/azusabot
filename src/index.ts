@@ -1,5 +1,5 @@
 import { InteractionResponseType, InteractionType } from 'discord-interactions';
-import { AWW_COMMAND } from './commands';
+import { AWW_COMMAND, BLEP_COMMAND, CHOO_COMMAND } from './commands';
 import { JsonResponse } from './JsonResponse';
 import { verifyDiscordRequest } from './verifyDiscordRequest';
 
@@ -22,11 +22,14 @@ export default {
     }
 
     const message = await request.json<any>();
-    const commandName = message.data.name.toLowerCase();
+
+    console.log(JSON.stringify(message, null, 2));
 
     if (message.type === InteractionType.PING) {
       return new JsonResponse({ type: InteractionResponseType.PONG });
     }
+
+    const commandName = message.data.name.toLowerCase();
 
     if (
       message.type === InteractionType.APPLICATION_COMMAND &&
@@ -37,6 +40,34 @@ export default {
       return new JsonResponse({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: { content: message },
+      });
+    }
+
+    if (
+      message.type === InteractionType.APPLICATION_COMMAND &&
+      commandName === BLEP_COMMAND.name
+    ) {
+      const animal = message.data.options.find(
+        (option: any) => option.name === 'animal'
+      );
+
+      return new JsonResponse({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: { content: animal.value.toString() },
+      });
+    }
+
+    if (
+      message.type === InteractionType.APPLICATION_COMMAND &&
+      commandName === CHOO_COMMAND.name
+    ) {
+      const animal = message.data.options.find(
+        (option: any) => option.name === 'animal'
+      );
+
+      return new JsonResponse({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: { content: animal.value.toString() },
       });
     }
 
