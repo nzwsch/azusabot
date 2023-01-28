@@ -21,11 +21,7 @@ export default {
       return discordResponse;
     }
 
-    const message = await request.json<{
-      type: InteractionType;
-      id: string;
-      data: { name: string };
-    }>();
+    const message = await request.json<any>();
     const commandName = message.data.name.toLowerCase();
 
     if (message.type === InteractionType.PING) {
