@@ -10,6 +10,7 @@
   },
   "private": true,
   "scripts": {
+    "b:commands": "tsc -m commonjs --outDir ./scripts/ src/commands.ts",
     "start": "wrangler dev",
     "deploy": "wrangler publish",
     "test": "vitest"

@@ -1,16 +1,14 @@
-const dotenv = require('dotenv')
-
-dotenv.config()
-
-const { AWW_COMMAND, INVITE_COMMAND } = require('./commands.js');
-// import Axios from 'axios';
-const Axios = require('axios')
+const dotenv = require('dotenv');
+const Axios = require('axios');
+const moduleCommands = require('./commands');
 
 /**
  * This file is meant to be run from the command line, and is not used by the
  * application server.  It's allowed to use node.js primitives, and only needs
  * to be run once.
  */
+
+dotenv.config();
 
 const token = process.env.DISCORD_TOKEN;
 const applicationId = process.env.DISCORD_APPLICATION_ID;
@@ -25,6 +23,14 @@ if (!applicationId) {
 }
 
 /**
+ * list commands
+ */
+
+const commands = Object.keys(moduleCommands)
+  .filter((key) => key !== '__esModule')
+  .map((key) => moduleCommands[key]);
+
+/**
  * Register all commands globally.  This can take o(minutes), so wait until
  * you're sure these are the commands you want.
  */
@@ -37,10 +43,7 @@ async function registerCommands(url) {
   const response = await Axios({
     method: 'PUT',
     url: url,
-    data: [
-      AWW_COMMAND,
-      INVITE_COMMAND
-    ],
+    data: commands,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bot ${token}`,
@@ -54,9 +57,10 @@ async function registerCommands(url) {
     const text = response.data;
     console.error(text);
   }
+
   return response;
 }
 
-;(async function() {
-  await registerGlobalCommands()
-})()
+(async function () {
+  await registerGlobalCommands();
+})();
