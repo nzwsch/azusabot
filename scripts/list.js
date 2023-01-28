@@ -89,7 +89,7 @@ async function deleteCommand(url) {
   // await listGlobalCommands()
   const guildCommands = await listGuildCommands();
   for (const command of guildCommands) {
-    console.log(command)
+    console.log(command);
     // await deleteGuildCommand(command.id);
   }
 })();

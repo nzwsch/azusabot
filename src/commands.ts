@@ -3,7 +3,6 @@ export const AWW_COMMAND = {
   description: 'Drop some cuteness on this channel.',
 };
 
-
 export const BLEP_COMMAND = {
   name: 'blep',
   type: 1,
@@ -38,15 +37,16 @@ export const BLEP_COMMAND = {
   ],
 };
 
-export const CLOO_COMMAND = {
-  name: 'cloo',
-  description: 'Drop some cuteness on this channel.',
-  type: 3,
-  required: true
-};
-
-export const DRAGON_COMMAND = {
-  name: 'dragon',
-  description: 'Drop some cuteness on this channel.',
-  type: 3,
+export const CHOO_COMMAND = {
+  name: 'choo',
+  type: 1,
+  description: 'Send a random adorable animal photo',
+  options: [
+    {
+      name: 'animal',
+      description: 'The type of animal',
+      type: 3,
+      required: true,
+    },
+  ],
 };

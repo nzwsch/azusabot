@@ -60,13 +60,7 @@ async function registerCommands(url) {
     },
   });
 
-  if (response.status === 200) {
-    console.log('Registered all commands');
-  } else {
-    console.error(`${response.status}: Error registering commands`);
-  }
-
-  return response;
+  console.log('Registered all commands');
 }
 
 (async function () {
