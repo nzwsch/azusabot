@@ -62,6 +62,11 @@ async function listCommands(url) {
   return response;
 }
 
+async function deleteGlobalCommand(commandId) {
+  const url = `https://discord.com/api/v10/applications/${applicationId}/commands/${commandId}`;
+  await deleteCommand(url);
+}
+
 async function deleteGuildCommand(commandId) {
   const url = `https://discord.com/api/v10/applications/${applicationId}/guilds/${testGuildId}/commands/${commandId}`;
   await deleteCommand(url);
@@ -86,10 +91,17 @@ async function deleteCommand(url) {
 }
 
 (async function () {
-  // await listGlobalCommands()
-  const guildCommands = await listGuildCommands();
-  for (const command of guildCommands) {
+  let commands;
+  console.log('== global commands ==');
+  commands = await listGlobalCommands();
+  for (const command of commands) {
     console.log(command);
-    // await deleteGuildCommand(command.id);
+    await deleteGlobalCommand(command.id);
+  }
+  console.log('== guild commands ==');
+  commands = await listGuildCommands();
+  for (const command of commands) {
+    console.log(command);
+    await deleteGuildCommand(command.id);
   }
 })();
