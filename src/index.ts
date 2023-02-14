@@ -1,6 +1,7 @@
 import { InteractionResponseType, InteractionType } from 'discord-interactions';
-import { AWW_COMMAND, BLEP_COMMAND, CHOO_COMMAND } from './commands';
+import { UMA_COMMAND } from './commands';
 import { JsonResponse } from './JsonResponse';
+import umaCommand from './umaCommand';
 import { verifyDiscordRequest } from './verifyDiscordRequest';
 
 export interface Env {
@@ -33,41 +34,13 @@ export default {
 
     if (
       message.type === InteractionType.APPLICATION_COMMAND &&
-      commandName === AWW_COMMAND.name
+      commandName === UMA_COMMAND.name
     ) {
-      const message = 'hello world!';
+      const message = umaCommand();
 
       return new JsonResponse({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: { content: message },
-      });
-    }
-
-    if (
-      message.type === InteractionType.APPLICATION_COMMAND &&
-      commandName === BLEP_COMMAND.name
-    ) {
-      const animal = message.data.options.find(
-        (option: any) => option.name === 'animal'
-      );
-
-      return new JsonResponse({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: { content: animal.value.toString() },
-      });
-    }
-
-    if (
-      message.type === InteractionType.APPLICATION_COMMAND &&
-      commandName === CHOO_COMMAND.name
-    ) {
-      const animal = message.data.options.find(
-        (option: any) => option.name === 'animal'
-      );
-
-      return new JsonResponse({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: { content: animal.value.toString() },
       });
     }
 
