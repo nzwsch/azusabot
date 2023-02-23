@@ -20,19 +20,15 @@ DISCORD_APPLICATION_ID
 
 ### Slash Commands
 
-#### `/awww`
+#### `/uma`
 
-Embed a script from [cloudflareworkers.com](https://cloudflareworkers.com).
+Randomly displays character's name.
 
-| Option  | Description                                    |
-| ------- | ---------------------------------------------- |
-| `url`   | The URL of the Worker on cloudflareworkers.com |
-| `title` | An optional title for the Worker script        |
+#### `/holidays`
 
-#### `/docs`
+Search for the most recent holidays.
 
-Search the [Cloudflare Workers documentation](https://developers.cloudflare.com/workers/).
-
-| Option | Description     |
-| ------ | --------------- |
-| `term` | The search term |
+| Option  | Description           |
+| ------- | --------------------- |
+| `month` | Month to be searched. |
+| `year`  | Year to be searched.  |

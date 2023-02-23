@@ -1,5 +1,6 @@
 import { InteractionResponseType, InteractionType } from 'discord-interactions';
-import { UMA_COMMAND } from './commands';
+import { HOLIDAYS_COMMAND, UMA_COMMAND } from './commands';
+import holidaysCommand from './holidaysCommand';
 import { JsonResponse } from './JsonResponse';
 import umaCommand from './umaCommand';
 import { verifyDiscordRequest } from './verifyDiscordRequest';
@@ -42,6 +43,22 @@ export default {
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: { content: message },
       });
+    }
+
+    if (
+      message.type === InteractionType.APPLICATION_COMMAND &&
+      commandName === HOLIDAYS_COMMAND.name
+    ) {
+      const animal = message.data.options.find(
+        (option: any) => option.name === 'animal'
+      );
+
+      return new JsonResponse({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: { content: message },
+      });
+
+      // const message = holidaysCommand()
     }
 
     return new Response('Unknown Type', {
